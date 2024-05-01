@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Management Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 font-sans leading-normal tracking-normal">
+    <nav class="bg-gray-800 p-4">
+      <div class="container mx-auto flex items-center space-x-10">
+        <span class="text-white text-lg font-bold">Management Dashboard</span>
+
+        <a href="/" class="text-white text-lg">Users</a>
+        <a href="/products" class="text-white text-lg">Products</a>
+      </div>
+    </nav>
+
+    <div class="container mx-auto mt-12">
+      <!-- Add New Product Section -->
+      <div class="max-w-md mx-auto bg-white p-8 border border-gray-300">
+        <h2 class="text-2xl font-bold mb-6">Add New Product</h2>
+        <form id="add-product-form">
+          <div class="mb-4">
+            <label
+              for="product-name"
+              class="block text-gray-700 text-sm font-bold mb-2"
+              >Name</label
+            >
+            <input
+              type="text"
+              id="product-name"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label
+              for="product-description"
+              class="block text-gray-700 text-sm font-bold mb-2"
+              >Description</label
+            >
+            <input
+              type="text"
+              id="product-description"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required
+            />
+          </div>
+          <div class="mb-6">
+            <label
+              for="product-price"
+              class="block text-gray-700 text-sm font-bold mb-2"
+              >Price</label
+            >
+            <input
+              type="number"
+              id="product-price"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required
+            />
+          </div>
+          <div class="mb-6">
+            <span class="block text-gray-700 text-sm font-bold mb-2"
+              >Availability</span
+            >
+            <label class="relative inline-block w-14 h-8">
+              <input
+                id="product-availability"
+                type="checkbox"
+                class="opacity-0 w-0 h-0"
+              />
+              <span
+                class="absolute cursor-pointer inset-0 bg-gray-400 transition-colors duration-200 ease-in-out rounded-full shadow-inner"
+                id="switch-bg"
+              >
+                <span
+                  class="absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform duration-200 ease-in-out"
+                  id="switch-knob"
+                ></span>
+              </span>
+            </label>
+          </div>
+
+          <button
+            type="button"
+            onclick="createProduct()"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Add Product
+          </button>
+        </form>
+      </div>
+
+      <!-- Product List -->
+      <div class="mt-12">
+        <h2 class="text-2xl font-bold mb-4">Products List</h2>
+        <table id="product-list" class="table-auto w-full">
+          <thead>
+            <tr class="bg-gray-200">
+              <th class="px-4 py-2">Name</th>
+              <th class="px-4 py-2">Description</th>
+              <th class="px-4 py-2">Price</th>
+              <th class="px-4 py-2">Available</th>
+              <th class="px-4 py-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <button
+          type="button"
+          onclick="getProducts()"
+          class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Get Products
+        </button>
+      </div>
+    </div>
+
+    <script src="static/product_script.js"></script>
+    <script>
+      document
+        .getElementById("product-availability")
+        .addEventListener("change", function () {
+          const background = document.getElementById("switch-bg");
+          const knob = document.getElementById("switch-knob");
+
+          if (this.checked) {
+            background.classList.replace("bg-gray-400", "bg-green-500");
+            knob.style.transform = "translateX(100%)";
+          } else {
+            background.classList.replace("bg-green-500", "bg-gray-400");
+            knob.style.transform = "translateX(0%)";
+          }
+        });
+    </script>
+  </body>
+</html>

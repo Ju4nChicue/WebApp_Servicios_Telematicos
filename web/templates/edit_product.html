@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Product</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-10">
+      <!-- Back to Home Button -->
+      <a
+        href="/products"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-3"
+        >Back to Products</a
+      >
+      <div class="flex flex-col w-full h-full items-center justify-center">
+        <h2 class="text-2xl font-bold mb-4">Edit Product</h2>
+        <form
+          id="edit-product-form"
+          class="max-w-lg flex flex-col items-center justify-center"
+        >
+          <input type="hidden" id="product-id" value="" />
+          <div class="mb-4">
+            <label
+              for="product-name"
+              class="block text-gray-700 text-sm font-bold mb-2"
+              >Name</label
+            >
+            <input
+              type="text"
+              class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              id="product-name"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label
+              for="product-description"
+              class="block text-gray-700 text-sm font-bold mb-2"
+              >Description</label
+            >
+            <input
+              type="text"
+              class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              id="product-description"
+              required
+            />
+          </div>
+          <div class="mb-6">
+            <label
+              for="product-price"
+              class="block text-gray-700 text-sm font-bold mb-2"
+              >Price</label
+            >
+            <input
+              type="number"
+              class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              id="product-price"
+              required
+            />
+          </div>
+          <div class="mb-6 w-full">
+            <span class="block text-gray-700 text-sm font-bold mb-2"
+              >Availability</span
+            >
+            <label class="relative inline-block w-14 h-8">
+              <input
+                id="product-availability"
+                type="checkbox"
+                class="opacity-0 w-0 h-0"
+              />
+              <span
+                class="absolute cursor-pointer inset-0 bg-gray-400 transition-colors duration-200 ease-in-out rounded-full shadow-inner"
+                id="switch-bg"
+              >
+                <span
+                  class="absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform duration-200 ease-in-out"
+                  id="switch-knob"
+                ></span>
+              </span>
+            </label>
+          </div>
+          <button
+            type="submit"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onclick="updateProduct()"
+          >
+            Save Changes
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="/static/product_script.js"></script>
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = {{id}};
+      fetch(`/api/products/${productId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          document.getElementById("product-id").value = data.id;
+          document.getElementById("product-name").value = data.name;
+          document.getElementById("product-description").value =
+            data.description;
+          document.getElementById("product-price").value = data.price;
+          document.getElementById("product-availability").checked =
+            data.available;
+
+          const background = document.getElementById("switch-bg");
+          const knob = document.getElementById("switch-knob");
+
+            if (data.available) {
+                background.classList.replace("bg-gray-400", "bg-green-500");
+                knob.style.transform = "translateX(100%)";
+            } else {
+                background.classList.replace("bg-green-500", "bg-gray-400");
+                knob.style.transform = "translateX(0%)";
+            }
+        })
+        .catch((error) => console.error("Error:", error));
+    </script>
+
+    <script>
+      document
+        .getElementById("product-availability")
+        .addEventListener("change", function () {
+          const background = document.getElementById("switch-bg");
+          const knob = document.getElementById("switch-knob");
+
+          if (this.checked) {
+            background.classList.replace("bg-gray-400", "bg-green-500");
+            knob.style.transform = "translateX(100%)";
+          } else {
+            background.classList.replace("bg-green-500", "bg-gray-400");
+            knob.style.transform = "translateX(0%)";
+          }
+        });
+    </script>
+  </body>
+</html>
